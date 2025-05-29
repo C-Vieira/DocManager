@@ -3,8 +3,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
-public class DocViewImpl extends JFrame {
+public class DocViewImpl extends JFrame implements DocView {
     private JPanel headerPanel;
     private JPanel tablePanel;
     private JPanel buttonPanel;
@@ -13,14 +14,21 @@ public class DocViewImpl extends JFrame {
     private JButton editDocButton;
     private DefaultTableModel tableModel;
 
-    public DocViewImpl() {
+    private final DocController docController;
+
+    public DocViewImpl(DocController docController) {
         setTitle("DocView");
         setSize(600, 400);
         setLocationRelativeTo(null);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        this.docController = docController;
+        docController.setView(this);
+
         initializeUI();
+
+        loadDocs();
     }
 
     private void initializeUI() {
@@ -42,6 +50,7 @@ public class DocViewImpl extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 addDoc();
+                loadDocs();
             }
         });
         editDocButton = new JButton("Edit Document");
@@ -60,7 +69,22 @@ public class DocViewImpl extends JFrame {
         add(buttonPanel, BorderLayout.EAST);
     }
 
-    private void addDoc() {
+    private void loadDocs(){
+        tableModel.setRowCount(0);
 
+        List<Document> docs = docController.getDocs();
+        for(Document doc : docs){
+            tableModel.addRow(new Object[]{doc.getID(), doc.getTitle(), doc.getLastEdit()});
+        }
+    }
+
+    private void addDoc() {
+        String docTitle = JOptionPane.showInputDialog(this, "Enter title:");
+        docController.addDoc(docTitle);
+    }
+
+    @Override
+    public void open() {
+        setVisible(true);
     }
 }

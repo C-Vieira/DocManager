@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class DocEditViewImpl extends JFrame {
+public class DocEditViewImpl extends JFrame implements DocView {
     private JPanel headerPanel;
     private JPanel mainPanel;
     private JLabel docTitleLabel;
@@ -39,5 +39,10 @@ public class DocEditViewImpl extends JFrame {
 
         add(headerPanel, BorderLayout.NORTH);
         add(mainPanel, BorderLayout.CENTER);
+    }
+
+    @Override
+    public void open() {
+        setVisible(true);
     }
 }
