@@ -57,8 +57,16 @@ public class DocViewImpl extends JFrame implements DocView {
         editDocButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                DocEditViewImpl editDocView = new DocEditViewImpl();
-                editDocView.setVisible(true);
+                int selectedRow = docTable.getSelectedRow();
+
+                if(selectedRow != -1) {
+                    int docId = (int) tableModel.getValueAt(selectedRow, 0);
+                    String docTitle = (String) tableModel.getValueAt(selectedRow, 1);
+
+                    DocEditViewImpl editDocView = new DocEditViewImpl(docController,
+                            docId, docTitle);
+                    editDocView.setVisible(true);
+                }
             }
         });
         buttonPanel.add(addDocButton);

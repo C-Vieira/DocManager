@@ -23,12 +23,17 @@ public class DocControllerImpl implements DocController {
     }
 
     @Override
-    public void updateDoc(Document doc) {
-
+    public void updateDoc(int id, String content) {
+        docDatabase.updateDoc(id, content);
     }
 
     @Override
     public List<Document> getDocs() {
         return docDatabase.getDocs();
+    }
+
+    @Override
+    public Document getDocAt(int id) {
+        return docDatabase.getDocAt(id);
     }
 }
