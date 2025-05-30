@@ -15,7 +15,7 @@ public class DocEditViewImpl extends JFrame implements DocView {
     private String currentDocTitle;
     private String currentDocContent;
 
-    public DocEditViewImpl(DocController docController, int currentDocId, String currentDocTitle) {
+    public DocEditViewImpl(DocController docController, int currentDocId) {
         setTitle("DocEditView");
         setSize(600, 400);
         setLocationRelativeTo(null);
@@ -26,7 +26,7 @@ public class DocEditViewImpl extends JFrame implements DocView {
         docController.setView(this);
 
         this.currentDocId = currentDocId;
-        this.currentDocTitle = currentDocTitle;
+        this.currentDocTitle = docController.getDocAt(currentDocId).getTitle();
         if (docController.getDocAt(currentDocId) != null) {
             this.currentDocContent = docController.getDocAt(currentDocId).getContent();
         }

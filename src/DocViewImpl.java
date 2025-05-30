@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-public class DocViewImpl extends JFrame implements DocView {
+public class DocViewImpl extends JFrame implements DocView, DocListener {
     private JPanel headerPanel;
     private JPanel tablePanel;
     private JPanel buttonPanel;
@@ -16,13 +16,14 @@ public class DocViewImpl extends JFrame implements DocView {
 
     private final DocController docController;
 
-    public DocViewImpl(DocController docController) {
+    public DocViewImpl(DocPublisher publisher, DocController docController) {
         setTitle("DocView");
         setSize(600, 400);
         setLocationRelativeTo(null);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        publisher.subscribe(this);
         this.docController = docController;
         docController.setView(this);
 
@@ -50,7 +51,6 @@ public class DocViewImpl extends JFrame implements DocView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 addDoc();
-                loadDocs();
             }
         });
         editDocButton = new JButton("Edit Document");
@@ -61,11 +61,7 @@ public class DocViewImpl extends JFrame implements DocView {
 
                 if(selectedRow != -1) {
                     int docId = (int) tableModel.getValueAt(selectedRow, 0);
-                    String docTitle = (String) tableModel.getValueAt(selectedRow, 1);
-
-                    DocEditViewImpl editDocView = new DocEditViewImpl(docController,
-                            docId, docTitle);
-                    editDocView.setVisible(true);
+                    ServiceLocator.getInstance().getEditDocView(docId).open();
                 }
             }
         });
@@ -94,5 +90,10 @@ public class DocViewImpl extends JFrame implements DocView {
     @Override
     public void open() {
         setVisible(true);
+    }
+
+    @Override
+    public void updateData() {
+        loadDocs();
     }
 }

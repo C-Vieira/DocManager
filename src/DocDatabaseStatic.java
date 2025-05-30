@@ -4,13 +4,27 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class DocDatabaseStatic implements DocDatabase {
+public class DocDatabaseStatic implements DocDatabase, DocPublisher {
     private final List<Document> docs = new ArrayList<>();
+    private final List<DocListener> listeners = new ArrayList<>();
+
+    @Override
+    public void subscribe(DocListener observer) {
+        listeners.add(observer);
+    }
+
+    private void notifyDataChanged(){
+        for(DocListener listener : listeners){
+            listener.updateData();
+        }
+    }
 
     @Override
     public void insertDoc(String title) {
         Document doc = new Document(title);
         docs.add(doc);
+        notifyDataChanged();
+
         System.out.println("Inserted " + doc.getTitle() + " into the database on " + doc.getLastEdit());
         System.out.println("List length: " + docs.size());
     }
@@ -19,7 +33,7 @@ public class DocDatabaseStatic implements DocDatabase {
     public void updateDoc(int id, String content) {
         System.out.println("Id is: " + id + " with content: " + content);
         System.out.println("List length: " + docs.size());
-        //if (docs.isEmpty()) return;
+
         docs.get(id).setContent(content);
         docs.get(id).setLastEdit(getNow());
         System.out.println("Updated " + docs.get(id).getTitle() + "'s content on " + docs.get(id).getLastEdit());
@@ -32,8 +46,6 @@ public class DocDatabaseStatic implements DocDatabase {
 
     @Override
     public Document getDocAt(int id) {
-        if (docs.isEmpty())
-            return null;
         return docs.get(id);
     }
 
