@@ -1,3 +1,10 @@
+package di;
+
+import features.document.datasource.DocDatabase;
+import features.document.datasource.DocDatabaseStatic;
+import features.document.datasource.DocPublisher;
+import features.document.presentation.*;
+
 public class ServiceLocator {
     private static ServiceLocator instance;
 

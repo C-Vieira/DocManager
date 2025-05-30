@@ -1,3 +1,7 @@
+package features.document.datasource;
+
+import features.document.model.Document;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

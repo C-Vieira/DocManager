@@ -1,3 +1,7 @@
+package features.document.datasource;
+
+import features.document.model.Document;
+
 import java.util.List;
 
 public interface DocDatabase {

@@ -1,3 +1,5 @@
+package features.document.presentation;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -72,5 +74,10 @@ public class DocEditViewImpl extends JFrame implements DocView {
     @Override
     public void open() {
         setVisible(true);
+    }
+
+    @Override
+    public void showError(String error) {
+        JOptionPane.showMessageDialog(DocEditViewImpl.this, error, "Error", JOptionPane.ERROR_MESSAGE);
     }
 }

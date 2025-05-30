@@ -1,3 +1,10 @@
+package features.document.presentation;
+
+import di.ServiceLocator;
+import features.document.datasource.DocListener;
+import features.document.datasource.DocPublisher;
+import features.document.model.Document;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -42,6 +49,7 @@ public class DocViewImpl extends JFrame implements DocView, DocListener {
         tablePanel = new JPanel();
         tableModel = new DefaultTableModel(new Object[]{"ID", "Title", "LastEdited"}, 0);
         JTable docTable = new JTable(tableModel);
+        docTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane scrollPane = new JScrollPane(docTable);
         tablePanel.add(scrollPane);
 
@@ -90,6 +98,11 @@ public class DocViewImpl extends JFrame implements DocView, DocListener {
     @Override
     public void open() {
         setVisible(true);
+    }
+
+    @Override
+    public void showError(String error) {
+        JOptionPane.showMessageDialog(DocViewImpl.this, error, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     @Override

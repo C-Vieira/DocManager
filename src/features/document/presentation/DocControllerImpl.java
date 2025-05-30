@@ -1,3 +1,8 @@
+package features.document.presentation;
+
+import features.document.datasource.DocDatabase;
+import features.document.model.Document;
+
 import java.util.List;
 
 public class DocControllerImpl implements DocController {
@@ -15,10 +20,13 @@ public class DocControllerImpl implements DocController {
 
     @Override
     public void addDoc(String title) {
-        if(title == null || title.isEmpty()) {
-            title = "New Document";
+        if (title == null) {
+            return;
+        } else if (title.isEmpty()) {
+            docView.showError("Title cannot be empty");
+        } else {
+            docDatabase.insertDoc(title);
         }
-        docDatabase.insertDoc(title);
     }
 
     @Override
