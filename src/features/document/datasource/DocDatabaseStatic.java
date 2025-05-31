@@ -8,15 +8,23 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+/*
+ *  Classe que simula o funcionamento de um banco de dados
+ *  -   Mantém uma lista de referências à DocListeners inscritos
+ *      para receberem notificações de alterações nos dados
+ */
 public class DocDatabaseStatic implements DocDatabase, DocPublisher {
     private final List<Document> docs = new ArrayList<>();
+    // Lista contendo instâncias inscritas nesta classe (Observer)
     private final List<DocListener> listeners = new ArrayList<>();
 
+    // Método para inscrição de uma instância nesta classe (Observer)
     @Override
     public void subscribe(DocListener observer) {
         listeners.add(observer);
     }
 
+    // Método de notificação às instâncias inscritas nesta classe (Observer)
     private void notifyDataChanged(){
         for(DocListener listener : listeners){
             listener.updateData();
@@ -27,6 +35,8 @@ public class DocDatabaseStatic implements DocDatabase, DocPublisher {
     public void insertDoc(String title) {
         Document doc = new Document(title);
         docs.add(doc);
+
+        // Notificar instâncias inscritas sobre alterações
         notifyDataChanged();
 
         System.out.println("Inserted " + doc.getTitle() + " into the database on " + doc.getLastEdit());

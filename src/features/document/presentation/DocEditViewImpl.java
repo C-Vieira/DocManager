@@ -5,6 +5,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/*
+ *  Classe que define uma tela de edição de documentos
+ *  -   Recebe dados de entrada e faz requisições para
+ *      uma classe mediadora (DocController)
+ */
 public class DocEditViewImpl extends JFrame implements DocView {
     private JPanel headerPanel;
     private JPanel mainPanel;
@@ -12,11 +17,13 @@ public class DocEditViewImpl extends JFrame implements DocView {
     private JButton saveButton;
     private JTextArea editTextArea;
 
+    // Referência para uma instância de DocController (Mediator)
     private final DocController docController;
     private int currentDocId;
     private String currentDocTitle;
     private String currentDocContent;
 
+    // Injeção de dependência via construtor: DocController
     public DocEditViewImpl(DocController docController, int currentDocId) {
         setTitle("DocEditView");
         setSize(600, 400);
@@ -25,6 +32,7 @@ public class DocEditViewImpl extends JFrame implements DocView {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         this.docController = docController;
+        // Injeção de dependência via método para DocController
         docController.setView(this);
 
         this.currentDocId = currentDocId;
@@ -66,6 +74,7 @@ public class DocEditViewImpl extends JFrame implements DocView {
         add(mainPanel, BorderLayout.CENTER);
     }
 
+    // Método de comunicação com DocController (Mediator)
     private void saveDocument() {
         String newContent = editTextArea.getText();
         docController.updateDoc(currentDocId, newContent);

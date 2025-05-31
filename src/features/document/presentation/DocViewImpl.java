@@ -12,6 +12,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+/*
+ *  Classe que define a tela principal da aplicação
+ *  -   Recebe dados de entrada e faz requisições para
+ *      uma classe mediadora (DocController)
+ *  -   Observa e reage à notificações de alterações nos
+ *      dados da classe DocDatabase (DocDatabaseStatic)
+ */
 public class DocViewImpl extends JFrame implements DocView, DocListener {
     private JPanel headerPanel;
     private JPanel tablePanel;
@@ -21,8 +28,10 @@ public class DocViewImpl extends JFrame implements DocView, DocListener {
     private JButton editDocButton;
     private DefaultTableModel tableModel;
 
+    // Referência para uma instância de DocController (Mediator)
     private final DocController docController;
 
+    // Injeção de dependências via construtor: DocPublisher, DocController
     public DocViewImpl(DocPublisher publisher, DocController docController) {
         setTitle("DocView");
         setSize(600, 400);
@@ -30,8 +39,15 @@ public class DocViewImpl extends JFrame implements DocView, DocListener {
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        /*
+         *  Inscrever esta instância para ser notificada
+         *  de alterações na classe observada (Observer)
+         *  (DocPublisher -> DocDatabaseStatic)
+         */
         publisher.subscribe(this);
+
         this.docController = docController;
+        // Injeção de dependência via método para DocController
         docController.setView(this);
 
         initializeUI();
@@ -81,6 +97,7 @@ public class DocViewImpl extends JFrame implements DocView, DocListener {
         add(buttonPanel, BorderLayout.EAST);
     }
 
+    // Método de comunicação com DocController (Mediator)
     private void loadDocs(){
         tableModel.setRowCount(0);
 
@@ -90,6 +107,7 @@ public class DocViewImpl extends JFrame implements DocView, DocListener {
         }
     }
 
+    // Método de comunicação com DocController (Mediator)
     private void addDoc() {
         String docTitle = JOptionPane.showInputDialog(this, "Enter title:");
         docController.addDoc(docTitle);
@@ -105,6 +123,10 @@ public class DocViewImpl extends JFrame implements DocView, DocListener {
         JOptionPane.showMessageDialog(DocViewImpl.this, error, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
+    /*
+     *  Método de resposta à notificações
+     *  de classes inscritas (Observer)
+     */
     @Override
     public void updateData() {
         loadDocs();

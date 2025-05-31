@@ -4,6 +4,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+/*
+ *  Classe que define um objeto Document
+ *  Expõe getters e setters para manipulação de dados
+ */
 public class Document {
     private static int ID = -1;
     private int id;

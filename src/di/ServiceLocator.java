@@ -5,7 +5,12 @@ import features.document.datasource.DocDatabaseStatic;
 import features.document.datasource.DocPublisher;
 import features.document.presentation.*;
 
+/*
+ *  Singleton que controla a criação de objetos: Views, Controllers e Databases
+ *  assim como suas dependências
+ */
 public class ServiceLocator {
+    // Instância para o Singleton: ServiceLocator
     private static ServiceLocator instance;
 
     public static ServiceLocator getInstance() {
@@ -16,6 +21,7 @@ public class ServiceLocator {
         return instance;
     }
 
+    // Instância para o Singleton: DocDatabaseStatic
     private DocDatabaseStatic docDatabaseStatic;
 
     private DocDatabaseStatic getDocDatabaseStatic() {
@@ -25,6 +31,8 @@ public class ServiceLocator {
 
         return docDatabaseStatic;
     }
+
+    // Métodos para construção de objetos e suas dependências:
 
     public DocDatabase getDocDatabase() {
         return getDocDatabaseStatic();
