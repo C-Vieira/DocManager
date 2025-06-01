@@ -59,7 +59,7 @@ public class DocViewImpl extends JFrame implements DocView, DocListener {
         setLayout(new BorderLayout());
 
         headerPanel = new JPanel();
-        headerLabel = new JLabel("JNote: Document Manger");
+        headerLabel = new JLabel("JDoc: Document Manger");
         headerPanel.add(headerLabel);
 
         tablePanel = new JPanel();
